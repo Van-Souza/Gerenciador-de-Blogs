@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-plus-lg"></i> Criar Nova Tarefa</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <!-- Seção Principal -->
+                    <div class="mb-3">
+                        <label class="form-label">Título*</label>
+                        <input type="text" class="form-control" name="title" required 
+                               placeholder="Digite o título da tarefa">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">URL</label>
+                        <input type="url" class="form-control" name="url" 
+                               placeholder="https://exemplo.com">
+                        <div class="form-text">Opcional - deve começar com http:// ou https://</div>
+                    </div>
+
+                    <!-- Seção Detalhes -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Prioridade*</label>
+                            <select class="form-select" name="priority" required>
+                                <option value="1">🔴 Alta</option>
+                                <option value="2">🟡 Média</option>
+                                <option value="3" selected>🔵 Baixa</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Prazo</label>
+                            <input type="date" class="form-control" name="deadline">
+                        </div>
+                    </div>
+
+                    <!-- Seção Atribuição -->
+                    {% if users %}
+                    <div class="mb-3">
+                        <label class="form-label">Atribuir para*</label>
+                        <select class="form-select" name="assigned_to" required>
+                            {% for user in users %}
+                            <option value="{{ user.id }}" 
+                                    {% if user.id == session.user_id %}selected{% endif %}>
+                                {{ user.username }} ({{ user.role }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+
+
+                    
+                   
+
+                    <!-- Botões -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Salvar Tarefa
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-lg"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
