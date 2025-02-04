@@ -1,9 +1,9 @@
 [build]
-  command = "pip install -r requirements.txt && cp app.py functions/app.py"
-  functions = "functions"
-  publish = "."
+command = "pip install -r requirements.txt && cp app.py functions/app.py"
+functions = "functions"
+publish = "."
 
 [[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/app"
-  status = 200
+from = "/*"
+to = "/.netlify/functions/app"
+status = 200
