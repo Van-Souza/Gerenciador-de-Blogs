@@ -12,8 +12,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 app.config['SYNC_URLS'] = [
-    'https://meuatendimentovirtual.com.br/wp-json/wp/v2/docs?doc_category=35&per_page=100'
-   # 'https://api2.example.com/docs',
+    'https://meuatendimentovirtual.com.br/wp-json/wp/v2/docs?doc_category=35&per_page=100',
+    'https://meuatendimentovirtual.com.br/wp-json/wp/v2/docs?doc_category=51&per_page=100',
+    'https://meuatendimentovirtual.com.br/wp-json/wp/v2/docs?doc_category=50&per_page=100',
+    'https://meuatendimentovirtual.com.br/wp-json/wp/v2/docs?doc_category=45&per_page=100',
+    'https://meuatendimentovirtual.com.br/wp-json/wp/v2/docs?doc_category=46&per_page=100',
+    'https://blog.eagenda.com.br/wp-json/wp/v2/docs?doc_category=27&per_page=100',
+    'https://blog.eagenda.com.br/wp-json/wp/v2/docs?doc_category=4&per_page=100',
+    'https://blog.eagenda.com.br/wp-json/wp/v2/docs?doc_category=9&per_page=100',
+    'https://blog.eagenda.com.br/wp-json/wp/v2/docs?doc_category=28&per_page=100',
+    'https://blog.eagenda.com.br/wp-json/wp/v2/docs?doc_category=29&per_page=100',
+    'https://blog.eagenda.com.br/wp-json/wp/v2/docs?doc_category=32&per_page=100',
+    'https://blog.eagenda.com.br/wp-json/wp/v2/docs?doc_category=30&per_page=100',
+
+
+
     #'https://backup-api.example.com/data'
 ]  # Adicione/altere as URLs aqui
 db = SQLAlchemy(app)
@@ -334,12 +347,41 @@ def delete_task(task_id):
 def init_db_command():
     db.create_all()
     
-    if not User.query.filter_by(username='admin').first():
-        admin = User(username='admin', password='admin123', role='admin')
+    if not User.query.filter_by(username='Vandeilson').first():
+        admin = User(username='Vandeilson', password='admin123', role='admin')
         db.session.add(admin)
-        reviewer = User(username='reviewer', password='reviewer123', role='reviewer')
-        db.session.add(reviewer)
-        db.session.commit()
+    
+    if not User.query.filter_by(username='Joao').first():
+        reviewer_joao = User(username='Joao', password='reviewer123', role='reviewer')
+        db.session.add(reviewer_joao)
+    
+    if not User.query.filter_by(username='Flavia').first():
+        reviewer_flavia = User(username='Flavia', password='reviewer123', role='reviewer')
+        db.session.add(reviewer_flavia)
+    
+    db.session.commit()
+@app.cli.command('reset-db')
+def reset_db_command():
+    """Deleta o banco de dados existente e cria um novo."""
+    db.drop_all()  # Deleta todas as tabelas
+    db.create_all()  # Cria todas as tabelas novamente
+
+    # Adiciona os usuários iniciais
+    if not User.query.filter_by(username='Vandeilson').first():
+        admin = User(username='Vandeilson', password='Van9090@', role='admin')
+        db.session.add(admin)
+    
+    if not User.query.filter_by(username='Joao').first():
+        reviewer_joao = User(username='Joao', password='123', role='reviewer')
+        db.session.add(reviewer_joao)
+    
+    if not User.query.filter_by(username='Flavia').first():
+        reviewer_flavia = User(username='Flavia', password='123', role='reviewer')
+        db.session.add(reviewer_flavia)
+    
+    db.session.commit()
+    print("Banco de dados resetado com sucesso!")
 
 if __name__ == '__main__':
     app.run(debug=True)
+

@@ -1,5 +1,6 @@
 import os
 from app import app, db
+from app.models import User  # Certifique-se de importar o modelo User corretamente
 
 def reset_database():
     # Caminho para o arquivo do banco de dados
@@ -20,12 +21,20 @@ def reset_database():
         db.create_all()  # Cria todas as tabelas definidas nos modelos
         print("Banco de dados criado com sucesso!")
 
-        # Adiciona dados iniciais (opcional)
+        # Adiciona dados iniciais
         print("Adicionando dados iniciais...")
-        admin = User(username='admin', password='admin123', role='admin')
-        reviewer = User(username='reviewer', password='reviewer123', role='reviewer')
-        db.session.add(admin)
-        db.session.add(reviewer)
+        if not User.query.filter_by(username='Vandeilson').first():
+            admin = User(username='Vandeilson', password='admin123', role='admin')
+            db.session.add(admin)
+        
+        if not User.query.filter_by(username='Joao').first():
+            reviewer_joao = User(username='Joao', password='reviewer123', role='reviewer')
+            db.session.add(reviewer_joao)
+
+        if not User.query.filter_by(username='Flavia').first():
+            reviewer_flavia = User(username='Flavia', password='reviewer123', role='reviewer')
+            db.session.add(reviewer_flavia)
+
         db.session.commit()
         print("Dados iniciais adicionados com sucesso!")
 
